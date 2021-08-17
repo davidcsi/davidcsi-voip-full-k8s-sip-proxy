@@ -18,7 +18,7 @@
 DBENGINE=MYSQL
 
 ## database host
-DBHOST=[DBHOST]
+DBHOST={{ DBHOST }}
 
 ## database host
 DBPORT=3306
@@ -30,24 +30,24 @@ DBNAME=kamailio
 # DB_PATH="/usr/local/etc/kamailio/dbtext"
 
 ## database read/write user
-DBRWUSER=[DBUSER]
+DBRWUSER={{ DBUSER }}
 
 ## password for database read/write user
-DBRWPW=[DBPASS]
+DBRWPW={{ DBPASS }}
 
 ## database read only user
-DBROUSER=[DBUSER]
+DBROUSER={{ DBUSER }}
 
 ## password for database read only user
-DBROPW=[DBPASS]
+DBROPW={{ DBPASS }}
 
 ## database super user (for ORACLE this is 'scheme-creator' user)
-DBROOTUSER=[DBUSER]
+DBROOTUSER={{ DBUSER }}
 
 ## password for database super user
 ## - important: this is insecure, targeting the use only for automatic testing
 ## - known to work for: mysql
-DBROOTPW=[DBPASS]
+DBROOTPW={{ DBPASS }}
 
 ## database character set (used by MySQL when creating database)
 CHARSET="latin1"
