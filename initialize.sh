@@ -16,6 +16,13 @@ sed -i.backup "s/{{ KAM_PUBLIC_IP }}/$PUBLIC_IP/g" /etc/kamailio/definitions.cfg
 echo "alias=$PUBLIC_IP" >> aliases.cfg
 echo "alias=$PRIVATE_IP" >> aliases.cfg
 
+echo "RUN_KAMAILIO=yes" >> /etc/default/kamailio
+echo "SHM_MEMORY=64" >> /etc/default/kamailio
+echo "PKG_MEMORY=8" >> /etc/default/kamailio
+echo "CFGFILE=/etc/kamailio/kamailio.cfg" >> /etc/default/kamailio
+echo "USER=kamailio" >> /etc/default/kamailio
+echo "GROUP=kamailio" >> /etc/default/kamailio
+
 SIP_DOMAIN=$(consul kv get voice/sip_domain 2> /dev/null) && if [[ "$?" -eq "0" ]]; then echo "alias=$SIP_DOMAIN" >> aliases.cfg; fi
 
 kamdbctl create
