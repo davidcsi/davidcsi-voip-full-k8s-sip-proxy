@@ -23,7 +23,7 @@ echo "CFGFILE=/etc/kamailio/kamailio.cfg" >> /etc/default/kamailio
 echo "USER=kamailio" >> /etc/default/kamailio
 echo "GROUP=kamailio" >> /etc/default/kamailio
 
-consul-template -template="/etc/kamailio/dispatcher.list.tpl:/etc/kamailio/dispatcher.list:/usr/sbin/kamcmd dispatcher.reload" -once
+consul-template -template="/etc/kamailio/dispatcher.list.tpl:/etc/kamailio/dispatcher.list:/usr/sbin/kamcmd dispatcher.reload" -once 2> /dev/null
 
 SIP_DOMAIN=$(consul kv get voice/sip_domain 2> /dev/null) && if [[ "$?" -eq "0" ]]; then echo "alias=$SIP_DOMAIN" >> aliases.cfg; fi
 
