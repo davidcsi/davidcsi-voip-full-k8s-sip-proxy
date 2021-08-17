@@ -10,7 +10,7 @@ sed -i.backup "s/{{ DBHOST }}/$DB_ADDRESS/g" /etc/kamailio/definitions.cfg /etc/
 sed -i.backup "s/{{ DBUSER }}/$DB_USER/g" /etc/kamailio/definitions.cfg /etc/kamailio/kamctlrc
 sed -i.backup "s/{{ DBPASS }}/$DB_PASS/g" /etc/kamailio/definitions.cfg /etc/kamailio/kamctlrc
 
-sed -i.backup "s/{{ KAM_PRIVATE_IP }}/$PRIVATE_IP/g" /etc/kamailio/definitions.cfg /etc/kamailio/dispatcher.list
+sed -i.backup "s/{{ KAM_PRIVATE_IP }}/$PRIVATE_IP/g" /etc/kamailio/definitions.cfg /etc/kamailio/dispatcher.list.tpl
 sed -i.backup "s/{{ KAM_PUBLIC_IP }}/$PUBLIC_IP/g" /etc/kamailio/definitions.cfg
 
 echo "alias=$PUBLIC_IP" >> aliases.cfg
@@ -23,6 +23,10 @@ echo "CFGFILE=/etc/kamailio/kamailio.cfg" >> /etc/default/kamailio
 echo "USER=kamailio" >> /etc/default/kamailio
 echo "GROUP=kamailio" >> /etc/default/kamailio
 
+consul-template -template="/etc/kamailio/dispatcher.list.tpl:/etc/kamailio/dispatcher.list:/usr/sbin/kamcmd dispatcher.reload" -once
+
 SIP_DOMAIN=$(consul kv get voice/sip_domain 2> /dev/null) && if [[ "$?" -eq "0" ]]; then echo "alias=$SIP_DOMAIN" >> aliases.cfg; fi
+
+supervisorctl start consul_watcher
 
 kamdbctl create
