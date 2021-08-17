@@ -28,5 +28,13 @@ consul-template -template="/etc/kamailio/dispatcher.list.tpl:/etc/kamailio/dispa
 SIP_DOMAIN=$(consul kv get voice/sip_domain 2> /dev/null) && if [[ "$?" -eq "0" ]]; then echo "alias=$SIP_DOMAIN" >> aliases.cfg; fi
 
 supervisorctl start consul_watcher
-supervisorctl start kamailio
+
+SHM_MEMORY=64
+PKG_MEMORY=8
+USER=kamailio
+GROUP=kamailio
+CFGFILE=/etc/kamailio/kamailio.cfg
+
+/usr/sbin/kamailio -P /var/run/kamailio/kamailio.pid -f $CFGFILE -m $SHM_MEMORY -M $PKG_MEMORY -u $USER -g $GROUP -DD -E
+
 #kamdbctl create
