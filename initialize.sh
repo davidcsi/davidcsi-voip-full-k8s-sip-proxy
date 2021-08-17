@@ -10,7 +10,7 @@ sed -i.backup "s/{{ DBHOST }}/$DB_ADDRESS/g" /etc/kamailio/definitions.cfg /etc/
 sed -i.backup "s/{{ DBUSER }}/$DB_USER/g" /etc/kamailio/definitions.cfg /etc/kamailio/kamctlrc
 sed -i.backup "s/{{ DBPASS }}/$DB_PASS/g" /etc/kamailio/definitions.cfg /etc/kamailio/kamctlrc
 
-sed -i.backup "s/{{ KAM_PRIVATE_IP }}/$PRIVATE_IP/g" /etc/kamailio/definitions.cfg /etc/kamailio/dispatcher.list.tpl
+sed -i.backup "s/{{ KAM_PRIVATE_IP }}/$PRIVATE_IP/g" /etc/kamailio/definitions.cfg /etc/kamailio/dispatcher.list
 sed -i.backup "s/{{ KAM_PUBLIC_IP }}/$PUBLIC_IP/g" /etc/kamailio/definitions.cfg
 
 echo "alias=$PUBLIC_IP" >> aliases.cfg
@@ -25,10 +25,4 @@ echo "GROUP=kamailio" >> /etc/default/kamailio
 
 SIP_DOMAIN=$(consul kv get voice/sip_domain 2> /dev/null) && if [[ "$?" -eq "0" ]]; then echo "alias=$SIP_DOMAIN" >> aliases.cfg; fi
 
-cd /etc/kamailio
-curl -O https://releases.hashicorp.com/consul-template/0.19.5/consul-template_0.19.5_linux_amd64.tgz
-tar -xvzf consul-template_0.19.5_linux_amd64.tgz 
-mv consul-template /usr/bin/consul-template
-rm -rf consul-template_0.19.5_linux_amd64.tgz
-consul-template -template="dispatcher.list.tpl:dispatcher.list" -once
 kamdbctl create
